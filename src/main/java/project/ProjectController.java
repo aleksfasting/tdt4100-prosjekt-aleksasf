@@ -3,6 +3,8 @@ package project;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class ProjectController {
     @FXML
@@ -10,6 +12,13 @@ public class ProjectController {
 
     @FXML
     private ListView<String> messageList;
+
+    @FXML
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleButtonClick();
+        }
+    }
 
     @FXML
     private void handleButtonClick() {
