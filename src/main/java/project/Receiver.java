@@ -2,9 +2,11 @@ package project;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.List;
 
 public class Receiver implements Runnable{
     private DatagramSocket socket;
+    private List<String> messages;
 
     public Receiver(int port) {
         try {
@@ -23,10 +25,14 @@ public class Receiver implements Runnable{
             }
             message = message.trim();
             if (!message.isEmpty()) {
-                InputHandler.getField().getItems().add("Received: " + message);
-                InputHandler.getField().scrollTo(InputHandler.getField().getItems().size() - 1);
+                messages.add(message);
             }
         }
+    }
+
+    public void catchMessages() {
+        InputHandler.getField().getItems().addAll(messages);
+        messages.clear();
     }
 
     public String receiveMessage() {
