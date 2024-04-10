@@ -21,6 +21,7 @@ public class InputHandler{
             handleCommand(field, input);
         } else {
             printInput(field, input);
+            sendMessage(input);
         }
     }
 
