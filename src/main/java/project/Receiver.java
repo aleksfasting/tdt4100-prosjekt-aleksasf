@@ -22,16 +22,20 @@ public class Receiver implements Runnable{
     @Override
     public void run() {
         while (true) {
-            final String message = receiveMessage().trim();
+            String message = receiveMessage();
             if (message == null) {
                 continue;
             }
+            message = message.trim();
             if (!message.isEmpty()) {
                 messages.add(message);
             }
 
             Platform.runLater(() -> {
-                InputHandler.getField().getItems().addAll("Received: " + message);
+                for (String message1 : messages) {
+                    System.out.println("Received: " + message1);
+                }
+                messages.clear();
             });
         }
     }
