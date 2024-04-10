@@ -16,11 +16,10 @@ public class ProjectController {
         String message = messageField.getText();
 
         if (!message.isEmpty()) {
-            InputHandler.handleInput(messageList, message);
+            InputHandler.setField(messageList);
+            InputHandler.handleInput(message);
             messageField.clear();
         }
-
-        messageList.scrollTo(messageList.getItems().size() - 1);
     }
 
 }

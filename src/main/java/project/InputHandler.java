@@ -6,26 +6,29 @@ import javafx.scene.control.ListView;
 
 public class InputHandler{
     private static Sender sender = new Sender(12180);
-    private static Receiver receiver = new Receiver(12080);
     private static InetAddress address;
+    private static ListView<String> field;
     static {
         try {
-            address = InetAddress.getByName("192.168.0.106");
+            address = InetAddress.getByName("192.168.0.188");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    static {
+        (new Thread(new Receiver(12080))).start();
+    }
 
-    public static void handleInput(ListView<String> field, String input) {
+    public static void handleInput(String input) {
         if (input.charAt(0) == ':') {
-            handleCommand(field, input);
+            handleCommand(input);
         } else {
-            printInput(field, input);
+            printInput(input);
             sendMessage(input);
         }
     }
 
-    public static void printInput(ListView<String> field, String message) {
+    public static void printInput(String message) {
         field.getItems().add("You: " + message);
     }
 
@@ -37,11 +40,6 @@ public class InputHandler{
         }
     }
 
-    public static void receiveMessage(ListView<String> field) {
-        String message = receiver.receiveMessage();
-        field.getItems().add("Received: " + message);
-    }
-
     public static void connect(String command) {
         String IP = command.substring(9);
         try {
@@ -51,18 +49,23 @@ public class InputHandler{
         }
     }
 
-    public static void handleCommand(ListView<String> field, String command) {
+    public static void handleCommand(String command) {
         if (command.equals(":clear")) {
             field.getItems().clear();
             return;
-        }
-        if (command.equals(":receive")) {
-            receiveMessage(field);
         }
         if (command.contains(":connect")) {
             connect(command);
             return;
         }
         field.getItems().add("Unknown command: " + command);
+    }
+
+    public static ListView<String> getField() {
+        return field;
+    }
+
+    public static void setField(ListView<String> newField) {
+        field = newField;
     }
 }
