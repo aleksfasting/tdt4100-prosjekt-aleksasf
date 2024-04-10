@@ -32,7 +32,7 @@ public class Receiver implements Runnable{
             }
 
             Platform.runLater(() -> {
-                InputHandler.getField().getItems().addAll(messages);
+                InputHandler.getField().getItems().addAll("Received: " + messages);
                 messages.clear();
             });
         }
