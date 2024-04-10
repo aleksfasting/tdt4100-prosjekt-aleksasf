@@ -14,10 +14,9 @@ public class ProjectController {
     @FXML
     private void handleButtonClick() {
         String message = messageField.getText();
-        System.out.println(message);
 
         if (!message.isEmpty()) {
-            messageList.getItems().add(message);
+            InputHandler.handleInput(messageList, message);
             messageField.clear();
         }
 
