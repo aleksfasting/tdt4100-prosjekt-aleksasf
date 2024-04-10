@@ -57,7 +57,7 @@ public class InputHandler{
             field.getItems().add("Received: " + message);
             return;
         }
-        if (command.equals(":connect")) {
+        if (command.contains(":connect")) {
             String IP = command.substring(9);
             try {
                 address = InetAddress.getByName(IP);
