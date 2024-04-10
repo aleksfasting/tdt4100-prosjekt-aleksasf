@@ -33,7 +33,7 @@ public class Receiver implements Runnable{
 
             Platform.runLater(() -> {
                 for (String message1 : messages) {
-                    System.out.println("Received: " + message1);
+                    InputHandler.getField().getItems().add("Received: " + message1);
                 }
                 messages.clear();
             });
