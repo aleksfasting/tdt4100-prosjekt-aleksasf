@@ -5,8 +5,6 @@ import java.net.InetAddress;
 import javafx.scene.control.ListView;
 
 public class InputHandler {
-    private static Sender sender = new Sender(2080);
-
     public static void handleInput(ListView<String> field, String input) {
         if (input.charAt(0) == ':') {
             handleCommand(field, input);
@@ -34,14 +32,15 @@ public class InputHandler {
             try {
                 String message = "Hello";
                 InetAddress address = InetAddress.getByName("192.168.0.106");
-                sender.sendMessage(message, address, 2080);
+                Sender sender = new Sender(12180);
+                sender.sendMessage(message, address, 12080);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return;
         }
         if (command.equals(":receive")) {
-            Receiver receiver = new Receiver(2080);
+            Receiver receiver = new Receiver(12080);
             receiver.receiveMessage();
             return;
         }

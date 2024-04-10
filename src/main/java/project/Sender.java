@@ -17,7 +17,7 @@ public class Sender {
 
     public void sendMessage(String message, InetAddress address, int port) {
         byte[] buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, port);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
         try {
             socket.send(packet);
         } catch (Exception e) {
