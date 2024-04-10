@@ -28,6 +28,7 @@ public class ProjectController {
             InputHandler.setField(messageList);
             InputHandler.handleInput(message);
             messageField.clear();
+            messageList.scrollTo(messageList.getItems().size() - 1);
         }
     }
 
