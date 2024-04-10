@@ -11,7 +11,7 @@ public class InputHandler{
     private static String username = "anon";
     static {
         try {
-            address = InetAddress.getByName("192.168.0.188");
+            address = InetAddress.getByName("192.168.0.255");
         } catch (Exception e) {
             e.printStackTrace();
         }
