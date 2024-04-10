@@ -9,6 +9,7 @@ public class InputHandler{
     private static InetAddress address;
     private static ListView<String> field;
     private static String username = "anon";
+    private static boolean started = false;
     static {
         try {
             address = InetAddress.getByName("192.168.0.255");
@@ -16,17 +17,11 @@ public class InputHandler{
             e.printStackTrace();
         }
     }
-    static {
-        (new Thread(new Receiver(12080))).start();
-    }
 
-    public static void handleInput(String input) {
-        if (input.charAt(0) == ':') {
-            handleCommand(input);
-        } else {
-            printInput(input);
-            sendMessage(input);
-        }
+
+    public static void start() {
+        if (started) return;
+        (new Thread(new Receiver(12080))).start();
     }
 
     public static void printInput(String message) {
@@ -70,16 +65,30 @@ public class InputHandler{
     }
 
 
+
+    public static void handleInput(String input) {
+        if (input.charAt(0) == ':') {
+            handleCommand(input);
+        } else {
+            printInput(input);
+            sendMessage(input);
+        }
+    }
+
     public static void handleCommand(String command) {
-        if (command.subSequence(0, 6).equals(":clear")) {
+        if (command.length() >= 6 && command.subSequence(0, 6).equals(":clear")) {
             field.getItems().clear();
             return;
         }
-        if (command.substring(0, 8).contains(":connect")) {
+        if (command.length() >= 6 && command.substring(0, 6).equals(":start")) {
+            start();
+            return;
+        }
+        if (command.length() >= 8 && command.substring(0, 8).equals(":connect")) {
             connect(command);
             return;
         }
-        if (command.substring(0, 7).contains(":config")) {
+        if (command.length() >= 7 && command.substring(0, 7).equals(":config")) {
             config(command.substring(8));
             return;
         }
