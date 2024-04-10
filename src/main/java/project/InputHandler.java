@@ -17,12 +17,6 @@ public class InputHandler {
 
     public static void printInput(ListView<String> field, String message) {
         field.getItems().add("You: " + message);
-        try {
-            InetAddress address = InetAddress.getByName("192.168.0.106");
-            sender.sendMessage(message, address, 2080);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void handleCommand(ListView<String> field, String command) {
@@ -34,6 +28,21 @@ public class InputHandler {
         }
         if (command.equals(":clear")) {
             field.getItems().clear();
+            return;
+        }
+        if (command == ":send") {  
+            try {
+                String message = "Hello";
+                InetAddress address = InetAddress.getByName("192.168.0.106");
+                sender.sendMessage(message, address, 2080);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (command == ":receive") {
+            Receiver receiver = new Receiver(2080);
+            receiver.receiveMessage();
             return;
         }
         field.getItems().add("Unknown command: " + command);
