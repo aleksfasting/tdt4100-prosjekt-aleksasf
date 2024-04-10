@@ -8,7 +8,7 @@ public class InputHandler{
     private static Sender sender = new Sender(12180);
     private static InetAddress address;
     private static ListView<String> field;
-    private static String username = "anon: ";
+    private static String username = "anon";
     static {
         try {
             address = InetAddress.getByName("192.168.0.188");
