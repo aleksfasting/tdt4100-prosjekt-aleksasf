@@ -37,33 +37,31 @@ public class InputHandler{
         }
     }
 
-    public static void handleCommand(ListView<String> field, String command) {
-        if (command.equals(":help")) {
-            field.getItems().add("    Commands:");
-            field.getItems().add("    :help - display this message");
-            field.getItems().add("    :clear - clear the screen");
-            return;
+    public static void receiveMessage(ListView<String> field) {
+        String message = receiver.receiveMessage();
+        field.getItems().add("Received: " + message);
+    }
+
+    public static void connect(String command) {
+        String IP = command.substring(9);
+        try {
+            address = InetAddress.getByName(IP);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void handleCommand(ListView<String> field, String command) {
         if (command.equals(":clear")) {
             field.getItems().clear();
             return;
         }
-        if (command.equals(":send")) {
-            sendMessage("Hello, World!");
-            return;
-        }
         if (command.equals(":receive")) {
-            String message = receiver.receiveMessage();
-            field.getItems().add("Received: " + message);
-            return;
+            receiveMessage(field);
         }
         if (command.contains(":connect")) {
-            String IP = command.substring(9);
-            try {
-                address = InetAddress.getByName(IP);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            connect(command);
+            return;
         }
         field.getItems().add("Unknown command: " + command);
     }
