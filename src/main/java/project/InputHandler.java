@@ -30,7 +30,7 @@ public class InputHandler {
             field.getItems().clear();
             return;
         }
-        if (command == ":send") {  
+        if (command.equals(":send")) {  
             try {
                 String message = "Hello";
                 InetAddress address = InetAddress.getByName("192.168.0.106");
@@ -40,7 +40,7 @@ public class InputHandler {
             }
             return;
         }
-        if (command == ":receive") {
+        if (command.equals(":receive")) {
             Receiver receiver = new Receiver(2080);
             receiver.receiveMessage();
             return;
