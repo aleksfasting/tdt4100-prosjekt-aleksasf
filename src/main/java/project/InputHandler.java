@@ -42,7 +42,8 @@ public class InputHandler {
             return;
         }
         if (command.equals(":receive")) {
-            receiver.receiveMessage();
+            String message = receiver.receiveMessage();
+            field.getItems().add("Received: " + message);
             return;
         }
         field.getItems().add("Unknown command: " + command);

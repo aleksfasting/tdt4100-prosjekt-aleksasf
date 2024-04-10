@@ -14,14 +14,15 @@ public class Receiver {
         }
     }
 
-    public void receiveMessage() {
+    public String receiveMessage() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
             socket.receive(packet);
-            System.out.println("Received: " + new String(buffer));
+            return new String(buffer);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
