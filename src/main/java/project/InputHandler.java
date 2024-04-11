@@ -36,7 +36,7 @@ public class InputHandler{
         try {
             sender.sendMessage(username + ": " + message, address, 12080);
         } catch (Exception e) {
-            e.printStackTrace();
+            field.getItems().add("*** Error sending message");
         }
     }
 
@@ -131,6 +131,15 @@ public class InputHandler{
                 return;
             }
             load(token);
+            return;
+        }
+        if (command.length() >= 5 && command.subSequence(0, 5).equals(":help")) {
+            field.getItems().add(":clear - clear chat");
+            field.getItems().add(":start - start receiver");
+            field.getItems().add(":connect [IP] - connect to IP");
+            field.getItems().add(":config -username [username] - set username");
+            field.getItems().add(":save [filename] - save chat to file");
+            field.getItems().add(":load [filename] - load chat from file");
             return;
         }
         field.getItems().add("*** Unknown command: " + command);
