@@ -87,6 +87,10 @@ public class InputHandler{
         }
     }
 
+    public static String getAddress() {
+        return address.toString();
+    }
+
 
 
     public static void handleInput(String input) {
