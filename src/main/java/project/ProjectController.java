@@ -1,5 +1,7 @@
 package project;
 
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -25,8 +27,10 @@ public class ProjectController {
         String message = messageField.getText();
 
         if (!message.isEmpty()) {
-            InputHandler.setField(messageList);
-            InputHandler.handleInput(message);
+            ArrayList<String> messageArray = new ArrayList<>(messageList.getItems());
+            InputHandler.setField(messageArray);
+            messageArray = InputHandler.handleInput(message);
+            messageList.getItems().setAll(messageArray);
             messageField.clear();
             messageList.scrollTo(messageList.getItems().size() - 1);
         }

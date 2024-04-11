@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javafx.scene.control.ListView;
+import javafx.application.*;;
 
 public class InputHandlerTest {
     private ListView<String> field;
@@ -28,4 +29,5 @@ public class InputHandlerTest {
     public void testConnect() {
         InputHandler.connect(":connect localhost");
         Assertions.assertEquals("localhost", InputHandler.getAddress());
+    }
 }

@@ -2,13 +2,13 @@ package project;
 
 import java.net.InetAddress;
 import java.nio.file.*;
+import java.util.ArrayList;
 
-import javafx.scene.control.ListView;
 
 public class InputHandler{
     private static Sender sender = new Sender(12180);
     private static InetAddress address;
-    private static ListView<String> field;
+    private static ArrayList<String> field;
     private static String username = "anon";
     private static boolean started = false;
     static {
@@ -22,21 +22,21 @@ public class InputHandler{
 
     public static void start() {
         if (started) {
-            field.getItems().add("Receiver already started");
+            field.add("Receiver already started");
             return;
         }
         (new Thread(new Receiver(12080))).start();
     }
 
     public static void printInput(String message) {
-        field.getItems().add("You: " + message);
+        field.add("You: " + message);
     }
 
     public static void sendMessage(String message) {
         try {
             sender.sendMessage(username + ": " + message, address, 12080);
         } catch (Exception e) {
-            field.getItems().add("*** Error sending message");
+            field.add("*** Error sending message");
         }
     }
 
@@ -49,11 +49,11 @@ public class InputHandler{
         }
     }
 
-    public static ListView<String> getField() {
+    public static ArrayList<String> getField() {
         return field;
     }
 
-    public static void setField(ListView<String> newField) {
+    public static void setField(ArrayList<String> newField) {
         field = newField;
     }
 
@@ -75,15 +75,16 @@ public class InputHandler{
 
     public static void save(String token) {
         FileHandler fileHandler = new FileHandler();
-        fileHandler.saveFile(token, field.getItems());
+        fileHandler.saveFile(token, field);
     }
 
     public static void load(String token) {
         FileHandler fileHandler = new FileHandler();
         try {
-            field.getItems().setAll(fileHandler.loadFile(token));
+            field.clear();
+            field.addAll(fileHandler.loadFile(token));
         } catch (Exception e) {
-            field.getItems().add("*** Error loading file");
+            field.add("*** Error loading file");
         }
     }
 
@@ -93,18 +94,19 @@ public class InputHandler{
 
 
 
-    public static void handleInput(String input) {
+    public static ArrayList<String> handleInput(String input) {
         if (input.charAt(0) == ':') {
             handleCommand(input);
         } else {
             printInput(input);
             sendMessage(input);
         }
+        return field;
     }
 
     public static void handleCommand(String command) {
         if (command.length() >= 6 && command.subSequence(0, 6).equals(":clear")) {
-            field.getItems().clear();
+            field.clear();
             return;
         }
         if (command.length() >= 6 && command.substring(0, 6).equals(":start")) {
@@ -122,7 +124,7 @@ public class InputHandler{
         if (command.length() >= 5 && command.substring(0,5).equals(":save")) {
             String token = command.substring(6);
             if (fileExists(token)) {
-                field.getItems().add("*** File already exists");
+                field.add("*** File already exists");
                 return;
             }
             save(command.substring(6));
@@ -131,21 +133,21 @@ public class InputHandler{
         if (command.length() >= 5 && command.substring(0, 5).equals(":load")) {
             String token = command.substring(6);
             if (!fileExists(token)) {
-                field.getItems().add("*** File does not exist");
+                field.add("*** File does not exist");
                 return;
             }
             load(token);
             return;
         }
         if (command.length() >= 5 && command.subSequence(0, 5).equals(":help")) {
-            field.getItems().add(":clear - clear chat");
-            field.getItems().add(":start - start receiver");
-            field.getItems().add(":connect [IP] - connect to IP");
-            field.getItems().add(":config -username [username] - set username");
-            field.getItems().add(":save [filename] - save chat to file");
-            field.getItems().add(":load [filename] - load chat from file");
+            field.add(":clear - clear chat");
+            field.add(":start - start receiver");
+            field.add(":connect [IP] - connect to IP");
+            field.add(":config -username [username] - set username");
+            field.add(":save [filename] - save chat to file");
+            field.add(":load [filename] - load chat from file");
             return;
         }
-        field.getItems().add("*** Unknown command: " + command);
+        field.add("*** Unknown command: " + command);
     }
 }

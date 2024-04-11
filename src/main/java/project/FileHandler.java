@@ -4,12 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import javafx.collections.ObservableList;
 import java.io.File;
 import java.util.ArrayList;
 
 public class FileHandler {
-    public void saveFile(String fileName, ObservableList<String> messages) {
+    public void saveFile(String fileName, ArrayList<String> messages) {
         try {
             PrintWriter writer = new PrintWriter(fileName);
             for (String message : messages) {
@@ -17,7 +16,7 @@ public class FileHandler {
             }
             writer.close();
         } catch (FileNotFoundException e) {
-            InputHandler.getField().getItems().add("Error saving file");
+            InputHandler.getField().add("Error saving file");
         }
     }
 

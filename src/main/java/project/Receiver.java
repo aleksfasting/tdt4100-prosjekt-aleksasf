@@ -32,7 +32,7 @@ public class Receiver implements Runnable{
             }
 
             Platform.runLater(() -> {
-                InputHandler.getField().getItems().addAll(messages);
+                InputHandler.getField().addAll(messages);
                 messages.clear();
             });
         }
@@ -45,7 +45,7 @@ public class Receiver implements Runnable{
             socket.receive(packet);
             return new String(buffer);
         } catch (Exception e) {
-            InputHandler.getField().getItems().add("Error receiving message");
+            InputHandler.getField().add("Error receiving message");
         }
         return null;
     }
