@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.nio.file.*;
 import java.util.ArrayList;
 
+import javafx.scene.control.ListView;
+
 
 public class InputHandler{
     private static Sender sender = new Sender(12180);
@@ -11,6 +13,7 @@ public class InputHandler{
     private static ArrayList<String> field;
     private static String username = "anon";
     private static boolean started = false;
+    private static ListView<String> view;
     static {
         try {
             address = InetAddress.getByName("192.168.0.255");
@@ -55,6 +58,19 @@ public class InputHandler{
 
     public static void setField(ArrayList<String> newField) {
         field = newField;
+    }
+
+    public static void setView(ListView<String> v) {
+        view = v;
+    }
+
+    public static ListView<String> getView() {
+        return view;
+    }
+
+    public static void post(String message) {
+        field.add(message);
+        view.getItems().setAll(field);
     }
 
     public static void setUsername(String newUsername) {

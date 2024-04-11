@@ -29,6 +29,7 @@ public class ProjectController {
         if (!message.isEmpty()) {
             ArrayList<String> messageArray = new ArrayList<>(messageList.getItems());
             InputHandler.setField(messageArray);
+            InputHandler.setView(messageList);
             messageArray = InputHandler.handleInput(message);
             messageList.getItems().setAll(messageArray);
             messageField.clear();
