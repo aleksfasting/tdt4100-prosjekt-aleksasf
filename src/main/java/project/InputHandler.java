@@ -1,6 +1,7 @@
 package project;
 
 import java.net.InetAddress;
+import java.nio.file.*;
 
 import javafx.scene.control.ListView;
 
@@ -20,7 +21,10 @@ public class InputHandler{
 
 
     public static void start() {
-        if (started) return;
+        if (started) {
+            field.getItems().add("Receiver already started");
+            return;
+        }
         (new Thread(new Receiver(12080))).start();
     }
 
@@ -64,6 +68,25 @@ public class InputHandler{
         }
     }
 
+    public static boolean fileExists(String token) {
+        Path path = Paths.get(token);
+        return Files.exists(path);
+    }
+
+    public static void save(String token) {
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.saveFile(token, field.getItems());
+    }
+
+    public static void load(String token) {
+        FileHandler fileHandler = new FileHandler();
+        try {
+            field.getItems().setAll(fileHandler.loadFile(token));
+        } catch (Exception e) {
+            field.getItems().add("*** Error loading file");
+        }
+    }
+
 
 
     public static void handleInput(String input) {
@@ -92,6 +115,24 @@ public class InputHandler{
             config(command.substring(8));
             return;
         }
-        field.getItems().add("Unknown command: " + command);
+        if (command.length() >= 5 && command.substring(0,5).equals(":save")) {
+            String token = command.substring(6);
+            if (fileExists(token)) {
+                field.getItems().add("*** File already exists");
+                return;
+            }
+            save(command.substring(6));
+            return;
+        }
+        if (command.length() >= 5 && command.substring(0, 5).equals(":load")) {
+            String token = command.substring(6);
+            if (!fileExists(token)) {
+                field.getItems().add("*** File does not exist");
+                return;
+            }
+            load(token);
+            return;
+        }
+        field.getItems().add("*** Unknown command: " + command);
     }
 }

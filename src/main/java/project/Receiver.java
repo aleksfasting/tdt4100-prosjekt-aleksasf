@@ -45,7 +45,7 @@ public class Receiver implements Runnable{
             socket.receive(packet);
             return new String(buffer);
         } catch (Exception e) {
-            e.printStackTrace();
+            InputHandler.getField().getItems().add("Error receiving message");
         }
         return null;
     }
