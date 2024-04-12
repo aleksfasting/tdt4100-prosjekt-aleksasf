@@ -25,9 +25,10 @@ public class InputHandler{
 
     public static void start() {
         if (started) {
-            field.add("Receiver already started");
+            field.add("*** Receiver already started");
             return;
         }
+        started = true;
         (new Thread(new Receiver(12080))).start();
     }
 
@@ -85,20 +86,20 @@ public class InputHandler{
     }
 
     public static boolean fileExists(String token) {
-        Path path = Paths.get(token);
+        Path path = Paths.get("savefiles/" + token);
         return Files.exists(path);
     }
 
     public static void save(String token) {
         FileHandler fileHandler = new FileHandler();
-        fileHandler.saveFile(token, field);
+        fileHandler.saveFile("savefiles/" + token, field);
     }
 
     public static void load(String token) {
         FileHandler fileHandler = new FileHandler();
         try {
             field.clear();
-            field.addAll(fileHandler.loadFile(token));
+            field.addAll(fileHandler.loadFile("savefiles/" + token));
         } catch (Exception e) {
             field.add("*** Error loading file");
         }
@@ -106,6 +107,10 @@ public class InputHandler{
 
     public static String getAddress() {
         return address.toString();
+    }
+
+    public static String getLastMessage() {
+        return field.get(field.size() - 1);
     }
 
 
@@ -156,12 +161,12 @@ public class InputHandler{
             return;
         }
         if (command.length() >= 5 && command.subSequence(0, 5).equals(":help")) {
-            field.add(":clear - clear chat");
-            field.add(":start - start receiver");
-            field.add(":connect [IP] - connect to IP");
-            field.add(":config -username [username] - set username");
-            field.add(":save [filename] - save chat to file");
-            field.add(":load [filename] - load chat from file");
+            field.add("    :clear - clear chat");
+            field.add("    :start - start receiver");
+            field.add("    :connect [IP] - connect to IP");
+            field.add("    :config -username [username] - set username");
+            field.add("    :save [filename] - save chat to file");
+            field.add("    :load [filename] - load chat from file");
             return;
         }
         field.add("*** Unknown command: " + command);
