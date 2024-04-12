@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
 
 
 public class InputHandler{
-    private static Sender sender = new Sender(12180);
+    private final static Sender sender = new Sender(12180);
     private static InetAddress address;
     private static ArrayList<String> field;
     private static String username = "anon";
@@ -126,49 +126,48 @@ public class InputHandler{
     }
 
     public static void handleCommand(String command) {
-        if (command.length() >= 6 && command.subSequence(0, 6).equals(":clear")) {
-            field.clear();
-            return;
+        String commandPrefix = command.split(" ")[0];
+
+        switch (commandPrefix) {
+            case ":clear":
+                field.clear();
+                break;
+            case ":start":
+                start();
+                break;
+            case ":connect":
+                connect(command);
+                break;
+            case ":config":
+                config(command.substring(8));
+                break;
+            case ":save":
+                String saveToken = command.substring(6);
+                if (fileExists(saveToken)) {
+                    field.add("*** File already exists");
+                } else {
+                    save(saveToken);
+                }
+                break;
+            case ":lead":
+                String loadToken = command.substring(6);
+                if (!fileExists(loadToken)) {
+                    field.add("*** File does not exist");
+                } else {
+                    load(loadToken);
+                }
+            case ":help":
+                field.add("    :clear - clear chat");
+                field.add("    :start - start receiver");
+                field.add("    :connect [IP] - connect to IP");
+                field.add("    :config -username [username] - set username");
+                field.add("    :save [filename] - save chat to file");
+                field.add("    :load [filename] - load chat from file");
+                break;
+
+            default:
+                field.add("*** Unknown command: " + command);
+                break;
         }
-        if (command.length() >= 6 && command.substring(0, 6).equals(":start")) {
-            start();
-            return;
-        }
-        if (command.length() >= 8 && command.substring(0, 8).equals(":connect")) {
-            connect(command);
-            return;
-        }
-        if (command.length() >= 7 && command.substring(0, 7).equals(":config")) {
-            config(command.substring(8));
-            return;
-        }
-        if (command.length() >= 5 && command.substring(0,5).equals(":save")) {
-            String token = command.substring(6);
-            if (fileExists(token)) {
-                field.add("*** File already exists");
-                return;
-            }
-            save(command.substring(6));
-            return;
-        }
-        if (command.length() >= 5 && command.substring(0, 5).equals(":load")) {
-            String token = command.substring(6);
-            if (!fileExists(token)) {
-                field.add("*** File does not exist");
-                return;
-            }
-            load(token);
-            return;
-        }
-        if (command.length() >= 5 && command.subSequence(0, 5).equals(":help")) {
-            field.add("    :clear - clear chat");
-            field.add("    :start - start receiver");
-            field.add("    :connect [IP] - connect to IP");
-            field.add("    :config -username [username] - set username");
-            field.add("    :save [filename] - save chat to file");
-            field.add("    :load [filename] - load chat from file");
-            return;
-        }
-        field.add("*** Unknown command: " + command);
     }
 }
